@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>無妹車 — Butterbuzz</title>
+<title>無妹車 — Butterbuzz (Super Cute)</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Press+Start+2P&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap');
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -31,107 +31,123 @@
     justify-content: center;
   }
 
-  /* soft ambient glow behind the text */
+  /* punchy pastel glow behind the text */
   .aura {
     position: absolute;
-    width: 520px;
-    height: 220px;
-    background: radial-gradient(ellipse at center, rgba(245,166,35,0.35) 0%, rgba(245,166,35,0.12) 45%, rgba(245,166,35,0) 72%);
-    filter: blur(4px);
-    animation: aura-pulse 4.5s ease-in-out infinite;
+    width: 500px;
+    height: 230px;
+    background: radial-gradient(ellipse at center, rgba(255,213,79,0.5) 0%, rgba(255,193,7,0.22) 48%, rgba(255,236,179,0) 75%);
+    filter: blur(6px);
+    animation: aura-pulse 2.6s ease-in-out infinite;
     pointer-events: none;
   }
 
   @keyframes aura-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.85; }
-    50%      { transform: scale(1.12); opacity: 1; }
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50%      { transform: scale(1.14); opacity: 1; }
+  }
+
+  /* bubbly scalloped backdrop */
+  .bubble {
+    position: absolute;
+    inset: -34px -46px;
+    background: rgba(255, 248, 220, 0.16);
+    border: 6px dashed rgba(255, 213, 79, 0.65);
+    border-radius: 999px;
+    animation: bubble-wiggle 3.2s ease-in-out infinite;
+  }
+
+  @keyframes bubble-wiggle {
+    0%, 100% { transform: rotate(-0.6deg) scale(1); }
+    50%      { transform: rotate(0.6deg) scale(1.015); }
   }
 
   .text-wrap {
     position: relative;
-    animation: float 3.6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50%      { transform: translateY(-10px); }
+    display: flex;
   }
 
   .main-text {
-    font-family: 'ZCOOL QingKe HuangYou', sans-serif;
-    font-size: 130px;
-    letter-spacing: 10px;
-    color: #FFD54F;
-    -webkit-text-stroke: 3px #3E1F00;
-    position: relative;
-    text-shadow:
-      4px 4px 0 #3E1F00,
-      0 0 18px rgba(245,166,35,0.9),
-      0 0 42px rgba(245,166,35,0.55);
-    animation: glow-pulse 3.6s ease-in-out infinite;
-    white-space: nowrap;
+    font-family: 'ZCOOL KuaiLe', sans-serif;
+    font-size: 76px;
+    display: flex;
+    gap: 14px;
   }
 
-  @keyframes glow-pulse {
-    0%, 100% {
-      text-shadow:
-        4px 4px 0 #3E1F00,
-        0 0 16px rgba(245,166,35,0.85),
-        0 0 36px rgba(245,166,35,0.45);
-    }
-    50% {
-      text-shadow:
-        4px 4px 0 #3E1F00,
-        0 0 26px rgba(255,213,79,1),
-        0 0 60px rgba(245,166,35,0.75);
-    }
+  /* each character sits inside its own rounded candy badge, so the
+     cuteness comes from the badge shape, not the glyph's own strokes */
+  .ch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 118px;
+    height: 118px;
+    border-radius: 42% 58% 46% 54% / 54% 46% 58% 42%;
+    border: 5px solid #8B4513;
+    box-shadow:
+      inset 0 -6px 0 rgba(139,69,19,0.25),
+      inset 0 4px 0 rgba(255,255,255,0.35),
+      0 6px 0 #8B4513;
+    color: #8B4513;
+    text-shadow: 0 2px 0 rgba(255,255,255,0.4);
+    animation: char-bounce 1.6s ease-in-out infinite;
   }
 
-  /* small honey drip accent under the text, on brand */
+  .ch:nth-child(1) { animation-delay: 0s;    background: radial-gradient(circle at 32% 28%, #FFECB3, #FFD54F 70%); }
+  .ch:nth-child(2) { animation-delay: 0.12s; background: radial-gradient(circle at 32% 28%, #FFF3D6, #FFC107 70%); }
+  .ch:nth-child(3) { animation-delay: 0.24s; background: radial-gradient(circle at 32% 28%, #FFECB3, #F5A623 70%); }
+  .ch:nth-child(4) { animation-delay: 0.36s; background: radial-gradient(circle at 32% 28%, #FFF3D6, #FFD54F 70%); }
+
+  @keyframes char-bounce {
+    0%, 60%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    30% { transform: translateY(-20px) rotate(-5deg) scale(1.08); }
+    45% { transform: translateY(-3px) rotate(4deg) scale(0.96); }
+  }
+
+  /* soft round honey blobs bouncing under the text */
   .drips {
     position: absolute;
-    bottom: -26px;
+    bottom: -24px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 26px;
+    gap: 28px;
   }
 
   .drip {
-    width: 8px;
-    background: linear-gradient(#F5A623, #FFC107);
-    border: 2px solid #3E1F00;
-    border-top: none;
-    border-radius: 0 0 6px 6px;
-    animation: drip-fall 2.8s ease-in-out infinite;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #FFECB3, #F5A623 70%);
+    border: 2px solid #8B4513;
+    animation: bob 1.4s ease-in-out infinite;
   }
 
-  .drip:nth-child(1) { height: 12px; animation-delay: 0s; }
-  .drip:nth-child(2) { height: 18px; animation-delay: 0.4s; }
-  .drip:nth-child(3) { height: 9px;  animation-delay: 0.8s; }
-  .drip:nth-child(4) { height: 15px; animation-delay: 1.2s; }
+  .drip:nth-child(1) { animation-delay: 0s; }
+  .drip:nth-child(2) { width: 19px; height: 19px; animation-delay: 0.15s; }
+  .drip:nth-child(3) { width: 11px; height: 11px; animation-delay: 0.3s; }
+  .drip:nth-child(4) { width: 16px; height: 16px; animation-delay: 0.45s; }
 
-  @keyframes drip-fall {
-    0%   { transform: translateY(0); opacity: 0.9; }
-    50%  { transform: translateY(6px); opacity: 1; }
-    100% { transform: translateY(0); opacity: 0.9; }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(9px) scale(0.9); }
   }
 
-  /* tiny pixel bee that drifts near the text */
+  /* cute pixel bee, flappier and closer */
   .bee {
     position: absolute;
-    top: -34px;
-    right: -46px;
-    width: 22px;
-    height: 16px;
-    animation: bee-fly 3.2s ease-in-out infinite;
+    top: -36px;
+    right: -50px;
+    width: 26px;
+    height: 20px;
+    animation: bee-fly 1.8s ease-in-out infinite;
   }
 
   @keyframes bee-fly {
     0%   { transform: translate(0,0) rotate(0deg); }
-    25%  { transform: translate(6px,-8px) rotate(6deg); }
-    50%  { transform: translate(0,-4px) rotate(0deg); }
-    75%  { transform: translate(-6px,-10px) rotate(-6deg); }
+    25%  { transform: translate(8px,-10px) rotate(10deg); }
+    50%  { transform: translate(2px,-2px) rotate(-4deg); }
+    75%  { transform: translate(-8px,-12px) rotate(-10deg); }
     100% { transform: translate(0,0) rotate(0deg); }
   }
 
@@ -145,6 +161,56 @@
     position: absolute;
     width: 4px;
     height: 4px;
+    border-radius: 1px;
+  }
+
+  .wing {
+    animation: flap 0.22s ease-in-out infinite alternate;
+    transform-origin: bottom center;
+  }
+
+  @keyframes flap {
+    0%   { transform: scaleY(1); }
+    100% { transform: scaleY(0.5); }
+  }
+
+  /* floating hearts rising from the bottom */
+  .heart {
+    position: absolute;
+    bottom: -10px;
+    font-size: 16px;
+    color: #FF8A80;
+    opacity: 0;
+    animation: float-up 2.4s ease-in infinite;
+    text-shadow: 0 0 6px rgba(255,138,128,0.6);
+  }
+  .heart.h1 { left: -60px; font-size: 14px; animation-delay: 0s; }
+  .heart.h2 { left: 40%;   font-size: 18px; animation-delay: 0.8s; }
+  .heart.h3 { right: -55px; font-size: 12px; animation-delay: 1.5s; }
+
+  @keyframes float-up {
+    0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+    15%  { opacity: 0.9; }
+    80%  { opacity: 0.7; }
+    100% { transform: translateY(-90px) scale(1.1); opacity: 0; }
+  }
+
+  /* sparkles twinkling around the text */
+  .sparkle {
+    position: absolute;
+    color: #FFECB3;
+    font-size: 20px;
+    animation: twinkle 1.3s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(255,236,179,0.95);
+  }
+  .sparkle.s1 { top: -14px; left: -40px; animation-delay: 0s; color: #B3E5FC; }
+  .sparkle.s2 { bottom: -14px; right: -36px; font-size: 15px; animation-delay: 0.4s; }
+  .sparkle.s3 { top: 6px; right: -22px; font-size: 12px; animation-delay: 0.8s; color: #FF8A80; }
+  .sparkle.s4 { bottom: 4px; left: -26px; font-size: 13px; animation-delay: 0.2s; }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.15; transform: scale(0.6) rotate(0deg); }
+    50%      { opacity: 1; transform: scale(1.25) rotate(20deg); }
   }
 </style>
 </head>
@@ -154,7 +220,18 @@
   <div class="aura"></div>
 
   <div class="text-wrap">
-    <div class="main-text">無妹車</div>
+    <div class="bubble"></div>
+    <div class="main-text" id="mainText"></div>
+
+    <div class="sparkle s1">✦</div>
+    <div class="sparkle s2">✦</div>
+    <div class="sparkle s3">✧</div>
+    <div class="sparkle s4">✧</div>
+
+    <div class="heart h1">♥</div>
+    <div class="heart h2">♥</div>
+    <div class="heart h3">♥</div>
+
     <div class="drips">
       <div class="drip"></div>
       <div class="drip"></div>
@@ -170,6 +247,16 @@
 </div>
 
 <script>
+  // split text into individually-animated character spans
+  const TEXT = "無妹車";
+  const mainTextEl = document.getElementById('mainText');
+  [...TEXT].forEach(ch => {
+    const span = document.createElement('span');
+    span.className = 'ch';
+    span.textContent = ch;
+    mainTextEl.appendChild(span);
+  });
+
   // pixel map for a tiny 8-bit bee (1 = body/stripe, 2 = wing, 0 = empty)
   const beeMap = [
     [0,2,0,0,0,0],
@@ -178,7 +265,7 @@
     [1,1,1,1,1,0],
     [0,0,1,0,0,0],
   ];
-  const colors = { 1: '#3E1F00', 2: '#B3E5FC' };
+  const colors = { 1: '#8B4513', 2: '#B3E5FC' };
   const stripeCols = [0,2,4]; // columns that get honey gold instead of brown
   const container = document.getElementById('beePixels');
   const px = 4;
@@ -186,14 +273,14 @@
     row.forEach((cell, x) => {
       if (cell === 0) return;
       const div = document.createElement('div');
-      div.className = 'bee-px';
+      div.className = 'bee-px' + (cell === 2 ? ' wing' : '');
       div.style.left = (x * px) + 'px';
       div.style.top = (y * px) + 'px';
       if (cell === 2) {
         div.style.background = colors[2];
-        div.style.opacity = '0.85';
+        div.style.opacity = '0.9';
       } else {
-        div.style.background = (y === 1 || y === 3) && stripeCols.includes(x) ? '#F5A623' : colors[1];
+        div.style.background = (y === 1 || y === 3) && stripeCols.includes(x) ? '#FFD54F' : colors[1];
       }
       container.appendChild(div);
     });
