@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無妹車 — Butterbuzz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Press+Start+2P&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: transparent; /* transparent for OBS Browser Source */
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* soft ambient glow behind the text */
+  .aura {
+    position: absolute;
+    width: 520px;
+    height: 220px;
+    background: radial-gradient(ellipse at center, rgba(245,166,35,0.35) 0%, rgba(245,166,35,0.12) 45%, rgba(245,166,35,0) 72%);
+    filter: blur(4px);
+    animation: aura-pulse 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes aura-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50%      { transform: scale(1.12); opacity: 1; }
+  }
+
+  .text-wrap {
+    position: relative;
+    animation: float 3.6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  .main-text {
+    font-family: 'ZCOOL QingKe HuangYou', sans-serif;
+    font-size: 130px;
+    letter-spacing: 10px;
+    color: #FFD54F;
+    -webkit-text-stroke: 3px #3E1F00;
+    position: relative;
+    text-shadow:
+      4px 4px 0 #3E1F00,
+      0 0 18px rgba(245,166,35,0.9),
+      0 0 42px rgba(245,166,35,0.55);
+    animation: glow-pulse 3.6s ease-in-out infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      text-shadow:
+        4px 4px 0 #3E1F00,
+        0 0 16px rgba(245,166,35,0.85),
+        0 0 36px rgba(245,166,35,0.45);
+    }
+    50% {
+      text-shadow:
+        4px 4px 0 #3E1F00,
+        0 0 26px rgba(255,213,79,1),
+        0 0 60px rgba(245,166,35,0.75);
+    }
+  }
+
+  /* small honey drip accent under the text, on brand */
+  .drips {
+    position: absolute;
+    bottom: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 26px;
+  }
+
+  .drip {
+    width: 8px;
+    background: linear-gradient(#F5A623, #FFC107);
+    border: 2px solid #3E1F00;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    animation: drip-fall 2.8s ease-in-out infinite;
+  }
+
+  .drip:nth-child(1) { height: 12px; animation-delay: 0s; }
+  .drip:nth-child(2) { height: 18px; animation-delay: 0.4s; }
+  .drip:nth-child(3) { height: 9px;  animation-delay: 0.8s; }
+  .drip:nth-child(4) { height: 15px; animation-delay: 1.2s; }
+
+  @keyframes drip-fall {
+    0%   { transform: translateY(0); opacity: 0.9; }
+    50%  { transform: translateY(6px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 0.9; }
+  }
+
+  /* tiny pixel bee that drifts near the text */
+  .bee {
+    position: absolute;
+    top: -34px;
+    right: -46px;
+    width: 22px;
+    height: 16px;
+    animation: bee-fly 3.2s ease-in-out infinite;
+  }
+
+  @keyframes bee-fly {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    25%  { transform: translate(6px,-8px) rotate(6deg); }
+    50%  { transform: translate(0,-4px) rotate(0deg); }
+    75%  { transform: translate(-6px,-10px) rotate(-6deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+  }
+
+  .bee-body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .bee-px {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="aura"></div>
+
+  <div class="text-wrap">
+    <div class="main-text">無妹車</div>
+    <div class="drips">
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+      <div class="drip"></div>
+    </div>
+
+    <!-- tiny 8-bit bee, pixel-drawn with divs -->
+    <div class="bee">
+      <div class="bee-body" id="beePixels"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // pixel map for a tiny 8-bit bee (1 = body/stripe, 2 = wing, 0 = empty)
+  const beeMap = [
+    [0,2,0,0,0,0],
+    [1,1,1,1,1,0],
+    [1,0,1,0,1,1],
+    [1,1,1,1,1,0],
+    [0,0,1,0,0,0],
+  ];
+  const colors = { 1: '#3E1F00', 2: '#B3E5FC' };
+  const stripeCols = [0,2,4]; // columns that get honey gold instead of brown
+  const container = document.getElementById('beePixels');
+  const px = 4;
+  beeMap.forEach((row, y) => {
+    row.forEach((cell, x) => {
+      if (cell === 0) return;
+      const div = document.createElement('div');
+      div.className = 'bee-px';
+      div.style.left = (x * px) + 'px';
+      div.style.top = (y * px) + 'px';
+      if (cell === 2) {
+        div.style.background = colors[2];
+        div.style.opacity = '0.85';
+      } else {
+        div.style.background = (y === 1 || y === 3) && stripeCols.includes(x) ? '#F5A623' : colors[1];
+      }
+      container.appendChild(div);
+    });
+  });
+</script>
+
+</body>
+</html>
